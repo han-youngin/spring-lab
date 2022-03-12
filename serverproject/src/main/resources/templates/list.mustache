@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List</title>
+</head>
+<body>
+    <h1>병원 리스트</h1>
+    <hr/>
+
+    {{#hospitals}}
+    <h2>병원 이름 : {{yadmNm}}</h2>
+    <h3>PCR 가능여부 : {{pcrPsblYn}}</h3>
+    <h3>시도 : {{sidoCdNm}}</h3>
+    <h3>시군구 :  {{sgguCdNm}}</h3>
+    <h3>주소 : {{addr}}</h3>
+    <hr/>
+    {{/hospitals}}
+</body>
+</html>

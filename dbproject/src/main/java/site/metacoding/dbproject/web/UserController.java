@@ -41,11 +41,23 @@ public class UserController {
     // 회원가입 - 로그인X
     @PostMapping("/join")
     public String join(User user) {
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("<script>");
+        sb.append("alert(값을 제대로 전달받지 못했습니다.);");
+        sb.append("history.back()';");
+
+        sb.append("</script>");
+        // 1.username,password,email 1.null 체크 2.공백체크
+        if (user.getUsername() == null || user.getPassword() == null || user.getEmail() == null) {
+            return sb.toString();
+        }
         System.out.println("user : " + user);
         User userEntity = userRepository.save(user);
         System.out.println("userEntity : " + userEntity);
         // redirect:매핑주소
         return "redirect:/loginForm"; // 로그인페이지 이동해주는 컨트롤러 메서드를 재활용
+        // 여기 다시
     }
 
     // 로그인 페이지 (정적) - 로그인X
@@ -80,16 +92,19 @@ public class UserController {
     // 유저상세 페이지 (동적) - 로그인O
     @GetMapping("/user/{id}")
     public String detail(@PathVariable Integer id, Model model) {
-
         User principal = (User) session.getAttribute("principal");
-        // 1.인증체크
+
+        // 1. 인증 체크
         if (principal == null) {
-            return "redirect:/loginForm";
+            return "error/page1";
         }
 
-        // 2.권한체크
+        // 2. 권한체크
+        if (principal.getId() != id) {
+            return "error/page1";
+        }
 
-        // 3.핵심로직
+        // 3. 핵심로직
         Optional<User> userOp = userRepository.findById(id);
 
         if (userOp.isPresent()) {
@@ -97,9 +112,8 @@ public class UserController {
             model.addAttribute("user", userEntity);
             return "user/detail";
         } else {
-            return "redirect:/";
+            return "error/page1";
         }
-
     }
 
     // 유저수정 페이지 (동적) - 로그인O
